@@ -1,0 +1,10 @@
+require("dotenv").config;
+const express = require("express");
+const server = express();
+const cors = require("cors");
+const PORT = process.env.NODE_PORT || 5000;
+const eventRouter = require("./routes/eventRouter");
+server.use(cors());
+server.use(express.json());
+server.use("/events", eventRouter);
+server.listen(PORT, () => console.log(`api running on port ${PORT}`));
