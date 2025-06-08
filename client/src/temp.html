@@ -1,0 +1,96 @@
+Skip to content
+geeksforgeeks
+Courses
+Tutorials
+Practice
+Search...
+
+T
+
+
+JS Tutorial
+JS Exercise
+JS Interview Questions
+JS Array
+JS String
+JS Object
+JS Operator
+JS Date
+JS Error
+JS Projects
+JS Set
+JS Map
+JS RegExp
+JS Math
+JS Number
+JS Boolean
+JS Examples
+JS Free JS Course
+JS A to Z Guide
+JS Formatter
+
+▲
+Next Article:
+Create an Analog Clock using HTML, CSS and JavaScript
+Next article icon
+
+
+How to Design a Simple Calendar using JavaScript?
+Last Updated : 26 May, 2025
+A calendar helps organize days, weeks, and months to track dates easily. Using JavaScript, we can create a simple calendar by dynamically generating the days of a chosen month, displaying the current date, and allowing users to navigate between months and select specific days with interactive highlights.
+
+What We're Going To Create
+A dynamic calendar that shows the current month and year.
+Navigation buttons to switch between months.
+Days are displayed in a grid layout with weekdays labeled.
+The current day is highlighted with a solid colored circle.
+Ability to click on any day to highlight it with a dotted circle and store that selected day in a variable, which we can see in the console.
+Project Preview:
+Screenshot-2025-05-26-124818
+Simple Calendar
+HTML, CSS and JavaScript Code for the Simple Calendar
+In the below code the HTML creates the calendar structure with sections for the month, navigation buttons, weekdays, and dates. CSS styles the calendar, making it visually appealing with colors, fonts, and circle highlights for today and selected dates. JavaScript dynamically generates the correct days for each month, updates the calendar when navigating months, and handles user clicks to highlight selected days.
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,
+        FILL,GRAD@20..48,100..700,0..1,-50..200">
+    </head>
+
+<body>
+    <div class="calendar-container">
+        <header class="calendar-header">
+            <p class="calendar-current-date"></p>
+            <div class="calendar-navigation">
+                <span id="calendar-prev" 
+                      class="material-symbols-rounded">
+                    chevron_left
+                </span>
+                <span id="calendar-next" 
+                      class="material-symbols-rounded">
+                    chevron_right
+                </span>
+            </div>
+        </header>
+
+        <div class="calendar-body">
+            <ul class="calendar-weekdays">
+                <li>Sun</li>
+                <li>Mon</li>
+                <li>Tue</li>
+                <li>Wed</li>
+                <li>Thu</li>
+                <li>Fri</li>
+                <li>Sat</li>
+            </ul>
+            <ul class="calendar-dates"></ul>
+        </div>
+    </div>
+    <script src="script.js"></script>
+
+</body>
+</html>
