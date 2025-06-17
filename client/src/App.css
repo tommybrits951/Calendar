@@ -1,0 +1,24 @@
+.month {
+    display: grid;
+    grid-template-rows: 16vh 6vh 60vh 5vh;   
+}
+#titleCont {
+    display: flex;
+    width: 100vw;
+    justify-content: space-around;
+    grid-row: 1;
+    text-align: center;
+}
+#daysTitleCont {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-row: 2;
+    text-align: center;
+}
+
+#daysCont {
+    display: grid;
+    grid-row: 3;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: auto;
+}

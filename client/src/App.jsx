@@ -29,10 +29,11 @@ const initDates = {
   dayend,
   lastMonthDate,
   lastMonthLastDay,
+  month_disp: month
 };
 
 function App() {
-  const [auth, setAuth] = useState(null);
+    const [auth, setAuth] = useState(null);
   const [dates, setDates] = useState(initDates);
 
   const weekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -50,12 +51,7 @@ function App() {
     "November",
     "December",
   ];
-  function changeMonth(e) {
-    const {title} = e.target;
-    if (title === "next" && month !== 11) {
-      setDates({...dates, month: dates.month + 1})
-    }
-  }
+  
   useEffect(() => {
     axios
       .get("/users")
@@ -69,14 +65,13 @@ function App() {
   }, []);
 
   return (
-    <main className="absolute h-full w-full">
+    <main className="absolute h-full m-0 p-0 w-full overflow-hidden">
       <CalContext.Provider
         value={{
           auth,
           setAuth,
-          weekdayNames,
           monthNames,
-          dates,
+          weekdayNames
           
         }}
       >
