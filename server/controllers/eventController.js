@@ -19,3 +19,33 @@ async function createEvent(req, res, next) {
     next(err);
   }
 }
+async function getEvents(req, res, next) {
+  try {
+    const events = await Event.find()
+    res.status(200).json(events)
+  } catch (err) {
+    next(err)
+  }
+}
+
+async function getEvent(req, res, next) {
+  try {
+    const {_id} = req.params
+    if (!_id) {
+      return res.status(400).json({message: "_id missing from address parameters!"})
+    }
+    const event = await Event.findById(_id)
+    if (!event) {
+      return res.status(404).json({message: "Couldn't find event."})
+    }
+    res.status(200).json(event)
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = {
+  createEvent,
+  getEvent,
+  getEvents
+}

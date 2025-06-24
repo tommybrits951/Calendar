@@ -16,6 +16,7 @@ app.use(cors({
 }))
 app.use(cookieParser())
 app.use("/users", require("./routes/userRoutes"))
+app.use("/events", require("./routes/eventRoutes"))
 
 mongoose.connection.on("open", () => {
     console.log('connected to db!')

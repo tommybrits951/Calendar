@@ -8,6 +8,7 @@ import "./App.css";
 import axios from "./api/axios";
 import Day from "./components/Day";
 import Home from "./components/Home";
+import EventForm from "./components/EventForm";
 
 export const CalContext = createContext();
 
@@ -15,7 +16,7 @@ export const CalContext = createContext();
 
 function App() {
     const [auth, setAuth] = useState(null);
-  
+    const [events, setEvents] = useState([])
   
   
   const weekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -34,6 +35,22 @@ function App() {
     "December",
   ];
   
+
+
+  useEffect(() => {
+    auth !== null ? axios.get('/events', {
+      headers: {
+        Authorization: `Bearer ${auth}`
+      }
+    })
+    .then(res => {
+      console.log(res.data)
+      setEvents(res.data)
+    })
+    .catch(err => console.log(err)) : null
+  }, [auth])
+
+
   useEffect(() => {
     axios
       .get("/users")
@@ -55,8 +72,8 @@ function App() {
           auth,
           setAuth,
           monthNames,
-          weekdayNames
-          
+          weekdayNames,
+          events
         }}
       >
         {auth === null ? (
@@ -69,6 +86,7 @@ function App() {
             <Route element={<Home />} path="/" />
             <Route element={<Month />} path="/:year/:month" />
             <Route element={<Day />} path="/:year/:month/:day" />
+            <Route element={<EventForm />} path="/event" />
           </Routes>
         )}
       </CalContext.Provider>
