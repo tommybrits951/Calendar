@@ -1,30 +1,28 @@
-function updateSquares(selectedMonth = 0, selectedYear = 0) {
-  
-  
-  
-  const lastMDate = new Date(selectedYear, selectedMonth, 0).getDate();
-  const lastMDay = new Date(selectedYear, selectedMonth, 1).getDay();
-  const firstDay = new Date(selectedYear, selectedMonth, 2).getDay();
-  const endDate = new Date(selectedYear, selectedMonth + 1, 0).getDate();
-    console.log(firstDay)
-  let arr = [];
-  if (firstDay === 1) {
-    for (let i = 1; i <= endDate; i++) {
-      arr = [...arr, i];
-    }
-  } else {
-    let num = lastMDate;
-    for (let i = lastMDay; i >= 1; i--) {
-      arr = [num, ...arr];
-      num--
-    }
 
-    for (let i = 1; i <= endDate; i++) {
-      arr = [...arr, i];
+
+export default function updateDate(year, month) {
+    const dayOne = new Date(year, month, 1).getDay()
+    const lastMDate = new Date(year, month, 0).getDate()
+    const lastMDay = new Date(year, month, 0).getDay()
+    const endDate = new Date(year, parseInt(month) + 1, 0).getDate()
+    
+    let tmp = []
+    let arr = []
+    
+    console.log(endDate)
+    if (dayOne !== 0) {
+      let num = lastMDate
+      for (let i = lastMDay; i >= 0; i--) {
+        const x = new Date(year, month - 1, num).getTime()
+        arr = [num, ...arr]
+        tmp = [x, ...tmp]
+        num--
+      }
     }
-  }
-  console.log(arr)
-  return arr;
+    for (let i = 1; i <= endDate; i++) {
+      const x = new Date(year, month, i).getTime()
+      arr = [...arr, i]
+      tmp = [...tmp, x]
+    }
+    return {tmp, arr}
 }
-
-export { updateSquares };

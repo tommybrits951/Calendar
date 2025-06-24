@@ -1,7 +1,4 @@
-.month {
-    display: grid;
-    grid-template-rows: 16vh 6vh 60vh 5vh;   
-}
+
 #titleCont {
     display: flex;
     width: 100vw;
@@ -20,5 +17,29 @@
     display: grid;
     grid-row: 3;
     grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: auto;
+    grid-template-rows: repeat(6, 1fr);
+}
+
+@keyframes turnRight {
+    0% {
+        right: -100vw; 
+    }
+    50% {
+        right: -50vw;
+    }
+    100% {
+        right: 0vw;
+    }
+}
+.page {
+    position: absolute;
+    right: 0;
+    width: 100vw;
+    
+    animation-name: turnRight;
+    animation-duration: 0.6s;
+    animation-timing-function: ease-in-out;
+    animation-direction: forwards;
+    display: grid;
+    grid-template-rows: 16vh 6vh 60vh 5vh;   
 }

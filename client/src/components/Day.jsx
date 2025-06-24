@@ -1,18 +1,28 @@
-import { useParams } from "react-router"
-import { useEffect, useContext } from "react"
-import { CalContext } from "../App"
-
+import { useState, useEffect } from "react";
+import dayHours from "../data/dayHours";
+import { useParams } from "react-router";
 export default function Day() {
-  const {date_num} = useParams()
-    const {weekdayNames, year, month} = useContext(CalContext)
-    const day = new Date(year, month, date_num).getDay()
-    useEffect(() => {
-    console.log(weekdayNames[day])
-    }, [])
-    return (
-    <div className='absolute flex flex-col text-center w-1/5x h-9/12 mt-5 justify-between'>
-        <h3 className="text-center text-3xl">{weekdayNames[day]}</h3>
+  const { year, month, day } = useParams();
+  const [hrs, setHrs] = useState([])
+  
+
+  useEffect(() => {
+    const first_hour = new Date(`${year}-${month}-${day} 00:00:00`).getTime()
+    const last_hour = new Date(`${year}-${month}-${day} 24:00:00`).getTime()
+    let num = 0
+    let arr = []
+    for (let i = 1; i <= 24; i++) {
+      const x = Math.floor((first_hour - last_hour) / 24)
+      console.log(x)
+      arr.push(num)
+    }
+    setHrs([...arr])
+  }, []);
+  return (
+    <div>
+      <div className="flex">
         
+      </div>
     </div>
-  )
+  );
 }

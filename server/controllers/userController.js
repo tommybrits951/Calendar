@@ -65,7 +65,7 @@ async function refreshHandle(req, res) {
             res.json(accessToken)
         }
     } catch (err) {
-        res.status(500).json({message: "Problem logging in!"})
+        res.status(500).json({message: "Problem getting auth!"})
     }
 }
 
