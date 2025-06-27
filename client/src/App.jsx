@@ -1,6 +1,6 @@
 import { useState, useEffect, createContext } from "react";
 import Month from "./components/Month";
-import { Routes, Route } from "react-router";
+import { Routes, Route, useNavigate } from "react-router";
 import Register from "./components/Register";
 
 import Login from "./components/Login";
@@ -9,46 +9,89 @@ import axios from "./api/axios";
 import Day from "./components/Day";
 import Home from "./components/Home";
 import EventForm from "./components/EventForm";
+import useDates from "./hooks/useDates";
+
 
 export const CalContext = createContext();
 
+const weekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
+const current = {
+  year: new Date().getFullYear(),
+  month: new Date().getMonth(),
+  date: new Date().getDate(),
+  day: new Date().getDay()
+} 
 
 function App() {
     const [auth, setAuth] = useState(null);
-    const [events, setEvents] = useState([])
-  
-  
-  const weekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+    const [disp, setDisp] = useState(current)
+    const dates = useDates(disp.year, disp.month, auth)
+    const navigate = useNavigate()
   
 
+    function changeMonth(value) {
 
-  useEffect(() => {
-    auth !== null ? axios.get('/events', {
-      headers: {
-        Authorization: `Bearer ${auth}`
+      const {year, month} = disp;
+      if (value === "Next" && month === 11) {
+        const tmp = new Date(year + 1, 0, 1)
+        setDisp({
+          ...disp,
+          year: tmp.getFullYear(),
+          month: tmp.getMonth(),
+          date: tmp.getDate(),
+          day: tmp.getDay()
+        })
+        
+      } else if (value === "Next" && month !== 11) {
+        const tmp = new Date(year, month + 1, 1)
+        setDisp({
+          ...disp,
+          month: tmp.getMonth(),
+          date: tmp.getDate(),
+          day: tmp.getDay()
+        })
+        navigate(`/${year - 1}/${11}`)
+      } else if (value === "Back" && month === 0) {
+        const tmp = new Date(year - 1, 11, 1)
+        setDisp({
+          ...disp,
+          year: tmp.getFullYear(),
+          month: tmp.getMonth(),
+          date: tmp.getDate(),
+          day: tmp.getDay()
+        })
+        navigate(`/${year - 1}/${11}`)
+      } else if (value === "Back" && month !== 0) {
+        const tmp = new Date(year, month - 1, 1)
+        setDisp({
+          ...disp,
+          month: tmp.getMonth(),
+          date: tmp.getDate(),
+          day: tmp.getDay()
+        })
+        navigate(`/${year}/${month - 1}`)
       }
-    })
-    .then(res => {
-      console.log(res.data)
-      setEvents(res.data)
-    })
-    .catch(err => console.log(err)) : null
-  }, [auth])
+    }
+
+
+
+
+  
 
 
   useEffect(() => {
@@ -73,7 +116,10 @@ function App() {
           setAuth,
           monthNames,
           weekdayNames,
-          events
+          dates,
+          current,
+          disp,
+          changeMonth
         }}
       >
         {auth === null ? (
@@ -86,7 +132,7 @@ function App() {
             <Route element={<Home />} path="/" />
             <Route element={<Month />} path="/:year/:month" />
             <Route element={<Day />} path="/:year/:month/:day" />
-            <Route element={<EventForm />} path="/event" />
+            <Route element={<EventForm />} path="/newevent" />
           </Routes>
         )}
       </CalContext.Provider>

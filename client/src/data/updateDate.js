@@ -9,7 +9,7 @@ export default function updateDate(year, month) {
     let tmp = []
     let arr = []
     
-    console.log(endDate)
+    
     if (dayOne !== 0) {
       let num = lastMDate
       for (let i = lastMDay; i >= 0; i--) {

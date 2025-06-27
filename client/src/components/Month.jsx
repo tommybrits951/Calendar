@@ -1,119 +1,72 @@
-import { useEffect, useContext, useState } from "react";
+import { useContext } from "react";
 import { CalContext } from "../App";
-import { Link, useParams } from "react-router";
-import updateDate from "../data/updateDate";
+
 import Square from "./Square";
+
 export default function Month() {
-  const { monthNames, weekdayNames, events } = useContext(CalContext);
-  const [squares, setSquares] = useState([]);
-  const [dates, setDates] = useState([]);
-  const { month, year } = useParams();
-  const [dayEvents, setDayEvents] = useState([])
+  const { monthNames, weekdayNames, current, disp, changeMonth, dates } =
+    useContext(CalContext);
 
-  function sortEvents(arr) {
-    let result = []
-    for (let i = 1; i <= dates.length; i++) {
-    let tmp = []
-        for (let j = 0; j < arr.length; j++) {
-        console.log(arr[j])
-        if (new Date(year, month, i).getDate() === new Date(arr[j].start_time).getDate() || new Date(year, month, i).getDate() === new Date(arr[j].end_time).getDate()) {
-          tmp = [...tmp, arr[j]]
-        }
-      }
-      result = [...result, tmp]
-    }
-    console.log(result)
-    setDayEvents(result)
-  }
-  const left = "<";
-  const right = ">";
-
-  const colors = [
-    "bg-cyan-300",
-    "bg-sky-300",
-    "bg-rose-300",
-    "bg-orange-300",
-    "bg-stone-300",
-    "bg-amber-300",
-    "bg-lime-300",
-    "bg-teal-300",
-    "bg-indigo-300",
-    "bg-fuchsia-300",
-    "bg-slate-300",
-    "bg-zinc-300",
+  const bgColors = [
+    "bg-cyan-500",
+    "bg-green-500",
+    "bg-sky-500",
+    "bg-rose-500",
+    "bg-orange-500",
+    "bg-slate-500",
   ];
 
-  useEffect(() => {
-    const { arr, tmp } = updateDate(year, month);
-    
-    setSquares([...arr]);
-    setDates([...tmp]);
-    
-  }, [month]);
-  useEffect(() => {
-    dates.length > 0 ? sortEvents(events) : null
-  }, [dates])
+  function handleMonth(e) {
+    const { value } = e.target;
+    changeMonth(value);
+  }
 
-  return (
-    <section
+  const content = dates ? (
+    <div
       id="month"
-      className={`${month ? "page" : null} text-white ${colors[month]} h-full`}
+      className={`absolute w-full h-full p-0 m-0 ${
+        bgColors[Math.floor(Math.random() * bgColors.length)]
+      }`}
     >
-      <div id="titleCont" className={`w-full ${colors[month]} text-center`}>
-        <Link
-          title="back"
-          className="cursor-pointer hover:scale-95 text-5xl  text-rose-500"
-          to={`/${parseInt(month) === 0 ? parseInt(year) - 1 : year}/${
-            parseInt(month) === 0 ? 11 : parseInt(month) - 1
-          }`}
+      <div className="mx-5">
+        <nav id="monthNav" className="flex mt-10 justify-around text-center">
+          <button
+          onClick={handleMonth}
+            className="text-3xl font-bold text-white hover:scale-95 cursor-pointer"
+            value={"Back"}
+          >
+            {"<"}
+          </button>
+          <h3 className="text-5xl text-white">{monthNames[disp.month]} {disp.year}</h3>
+          <button
+          onClick={handleMonth}
+            className="text-3xl font-bold text-white hover:scale-95 cursor-pointer"
+            value={"Next"}
+          >
+            {">"}
+          </button>
+        </nav>
+        <div
+          id="dayNames"
+          className="grid grid-cols-7 mt-3 border-b-1 border-r-1 text-center"
         >
-          {left}
-        </Link>
-        <h2
-          id="monthTitle"
-          className="w-2/3 text-5xl"
-        >{`${monthNames[month]} ${year}`}</h2>
-        <Link
-          to={`/${parseInt(month) === 11 ? parseInt(year) + 1 : year}/${
-            parseInt(month) === 11 ? 0 : parseInt(month) + 1
-          }`}
-          className="cursor-pointer hover:scale-95  text-rose-500 text-5xl"
-          title="next"
-        >
-          {right}
-        </Link>
+          {weekdayNames.map((dy, idx) => {
+            return (
+              <p key={idx} className="border-l-1">
+                {dy}
+              </p>
+            );
+          })}
+        </div>
+        <div id="daysCont" className="grid grid-cols-7 grid-rows-6">
+          {dates ? dates.map((dt, idx) => {
+            return <Square key={idx} data={dt} day={idx + 1} month={disp.month} year={disp.year} />
+          }) : null}
+        </div>
       </div>
-      <div
-        id="daysTitleCont"
-        className="bg-cyan-300 border-l-1 mx-3 border-black border-t-1"
-      >
-        {weekdayNames.map((dy, idx) => {
-          return (
-            <h4 className="day-names text-black border-r-1 mt-2" key={idx}>
-              {dy}
-            </h4>
-          );
-        })}
-      </div>
-      <div id="daysCont" className={` mx-3`}>
-        {squares.map((obj, idx) => {
-          return (
-            
-              <Square
-                obj={obj}
-                events={dayEvents[idx]}
-                squares={squares}
-                date={dates[idx]}
-                month={month}
-                year={year}
-                key={idx}
-              />
-            
-          );
-        })}
-      </div>
-
-      <p className="text-center text-black">Click Day To Schedule Event</p>
-    </section>
+    </div>
+  ) : (
+    <p>Loading...</p>
   );
+  return content;
 }
