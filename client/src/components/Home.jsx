@@ -4,6 +4,7 @@ import { CalContext } from "../App";
 
 export default function Home() {
     const {auth} = useContext(CalContext)
+    
     const navigate = useNavigate();
     const content = <p>Loading...</p>
     useEffect(() => {

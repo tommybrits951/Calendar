@@ -22,7 +22,9 @@ export default function useDates(year, month, auth) {
       for (let i = firstDay - 1; i >= 0; i--) {
         let obj = {
           date: num,
-          events: []
+          events: [],
+          month: new Date(year, month - 1, num).getMonth(),
+          year: new Date(year, month - 1, num).getFullYear()
         }
         num--
         arr = [obj, ...arr]  
@@ -32,7 +34,9 @@ export default function useDates(year, month, auth) {
           date: i,
           events: [],
           morning: new Date(`${year}-${month}-${i} 00:00:00`).getTime(),
-          night: new Date(`${year}-${month}-${i} 24:00:00`).getTime()
+          night: new Date(`${year}-${month}-${i} 24:00:00`).getTime(),
+          month: new Date(year, month, i).getMonth(),
+          year: new Date(year, month, i).getFullYear()
         }
         
         for (let j = 0; j < tmp.length; j++) {
@@ -48,7 +52,7 @@ export default function useDates(year, month, auth) {
         }
         arr = [...arr, obj]
       }
-      console.log(arr);
+      
       setDates(arr)
     })
     .catch(err => console.log(err)) : null

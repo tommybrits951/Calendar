@@ -4,17 +4,15 @@ async function createEvent(req, res, next) {
   try {
     const {
       start_time,
-      end_time,
-      location,
-      address,
-      postal,
-      contact_name,
-      contact_phone,
+      end_time
     } = req.body;
     if (!start_time || !end_time) {
         return res.status(400).json({message: "Missing either start_time or end_time."})
     }
-
+    const event = await Event.create({...req.body, start_time, end_time})
+    if (event) {
+      res.status(201).json({message: "Event created."})
+    }
   } catch (err) {
     next(err);
   }
