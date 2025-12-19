@@ -35,36 +35,38 @@ export default function Login() {
     setFormData({ ...formData, [name]: value });
   }
   return (
-    <form encType="multipart/form-data" className="pt-10 text-center flex flex-col" onSubmit={submit}>
-      <h3 className="text-4xl font-bold font-mono text-cyan-700">Sign In</h3>
-      <label className="text-lg mt-3">
-        Email
+    <div className="min-h-screen flex items-center justify-center">
+      <form encType="multipart/form-data" className="bg-orange-50 p-10 rounded-2xl shadow-xl text-center flex flex-col border border-amber-200" onSubmit={submit}>
+        <h3 className="text-4xl font-bold font-serif text-amber-800 mb-6">Welcome Home</h3>
+        <label className="text-lg text-amber-900 mt-3">
+          Email
+          <br />
+          <input className="text-amber-900 p-2 rounded-lg bg-white border border-amber-300 focus:border-amber-500 focus:outline-none mt-1"
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={change}
+            required
+          />
+        </label>
         <br />
-        <input className="text-black p-1 rounded bg-white "
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={change}
-          required
-        />
-      </label>
-      <br />
-      <label className="text-lg mt-3">
-        Password
+        <label className="text-lg text-amber-900 mt-3">
+          Password
+          <br />
+          <input className="text-amber-900 p-2 rounded-lg bg-white border border-amber-300 focus:border-amber-500 focus:outline-none mt-1"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={change}
+            required
+          />
+        </label>
         <br />
-        <input className="text-black p-1 rounded bg-white "
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={change}
-          required
-        />
-      </label>
-      <br />
-      <div className="flex justify-center">
-        <Link className="rounded bg-cyan-500 text-white p-2 mx-5 shadow-xl hover:scale-95 cursor-pointer" to={"/register"}>New User</Link>
-        <button className="rounded bg-cyan-500 text-white p-2 mx-5 shadow-xl hover:scale-95 cursor-pointer">Submit</button>
-      </div>
-    </form>
+        <div className="flex justify-center mt-4">
+          <Link className="rounded-full bg-stone-400 hover:bg-stone-500 text-white p-2 px-5 mx-3 shadow-lg hover:scale-95 cursor-pointer transition-all" to={"/register"}>New User</Link>
+          <button className="rounded-full bg-amber-700 hover:bg-amber-600 text-white p-2 px-5 mx-3 shadow-lg hover:scale-95 cursor-pointer transition-all">Sign In</button>
+        </div>
+      </form>
+    </div>
   );
 }

@@ -19,9 +19,17 @@ async function logEvent(message, logFileName) {
 
 async function logger(req, res, next) {
     const auth = req.headers.authorization
-    const token = auth.split(" ")[1]
-    const decoded = jwt.decode(token, process.env.REFRESH)
-    logEvent(`${req.method}\t${req.url}\t${req.headers.origin}\t${req.hostname}\t${decoded.email}`, "reqLog.log")
+    let email = "anonymous"
+    if (auth && auth.startsWith("Bearer ")) {
+        try {
+            const token = auth.split(" ")[1]
+            const decoded = jwt.verify(token, process.env.ACCESS)
+            email = decoded.email
+        } catch {
+            email = "invalid-token"
+        }
+    }
+    logEvent(`${req.method}\t${req.url}\t${req.headers.origin}\t${req.hostname}\t${email}`, "reqLog.log")
     next()
 }
 

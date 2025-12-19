@@ -9,6 +9,7 @@ import axios from "./api/axios";
 import Day from "./components/Day";
 import Home from "./components/Home";
 import EventForm from "./components/EventForm";
+import EditEvent from "./components/EditEvent";
 import useDates from "./hooks/useDates";
 
 
@@ -56,7 +57,7 @@ function App() {
           date: tmp.getDate(),
           day: tmp.getDay()
         })
-        
+        navigate(`/${year + 1}/${0}`)
       } else if (value === "Next" && month !== 11) {
         const tmp = new Date(year, month + 1, 1)
         setDisp({
@@ -65,7 +66,7 @@ function App() {
           date: tmp.getDate(),
           day: tmp.getDay()
         })
-        navigate(`/${year - 1}/${11}`)
+        navigate(`/${year}/${month + 1}`)
       } else if (value === "Back" && month === 0) {
         const tmp = new Date(year - 1, 11, 1)
         setDisp({
@@ -133,6 +134,7 @@ function App() {
             <Route element={<Month />} path="/:year/:month" />
             <Route element={<Day />} path="/:year/:month/:day" />
             <Route element={<EventForm />} path="/newevent" />
+            <Route element={<EditEvent />} path="/edit/:eventId" />
           </Routes>
         )}
       </CalContext.Provider>

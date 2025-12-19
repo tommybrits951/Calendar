@@ -38,8 +38,11 @@ async function login(req, res) {
             return res.status(400).json({message: "All fields required!"})
         }
         const user = await User.findOne({email: email})
+        if (!user) {
+            return res.status(401).json({message: "Email or Password is incorrect!"})
+        }
         const verified = bcrypt.compareSync(password, user.password)
-        if (!user || !verified) {
+        if (!verified) {
             return res.status(401).json({message: "Email or Password is incorrect!"})
         }
         const refreshToken = buildToken(user, process.env.REFRESH, "1d")
@@ -58,14 +61,18 @@ async function login(req, res) {
 async function refreshHandle(req, res) {
     try {
         const auth = req.cookies.jwt
-        const decoded = jwt.decode(auth, process.env.REFRESH)
-        const user = await User.findById(decoded._id)
-        if (user) {
-            const accessToken = buildToken(user, process.env.ACCESS, "1h")
-            res.json(accessToken)
+        if (!auth) {
+            return res.status(401).json({message: "No refresh token"})
         }
+        const decoded = jwt.verify(auth, process.env.REFRESH)
+        const user = await User.findById(decoded._id)
+        if (!user) {
+            return res.status(401).json({message: "User not found"})
+        }
+        const accessToken = buildToken(user, process.env.ACCESS, "1h")
+        res.json(accessToken)
     } catch (err) {
-        res.status(500).json({message: "Problem getting auth!"})
+        res.status(401).json({message: "Invalid refresh token"})
     }
 }
 
